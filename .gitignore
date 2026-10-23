@@ -1,0 +1,21 @@
+# Cursor / VS Code local state
+.vscode/
+.idea/
+.cursor/plans/
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# Common build and dependency outputs
+node_modules/
+dist/
+build/
+coverage/
+__pycache__/
+*.py[cod]
