@@ -26,21 +26,19 @@ your-project/
 
 ### Текущие команды
 
-- `/interrogate` — задать 3–5 вопросов до написания кода.
-- `/spec-plan` — сформировать scope, контракты, критерии приёмки и план.
-- `/tdd-loop` — написать тесты, подтвердить RED и довести реализацию до GREEN.
-- `/classify-change` — оценить риск изменения и необходимые проверки.
-- `/code-review` — провести отдельное ревью изменений по требованиям и стандартам.
-- `/implement-spec` — реализовать утверждённую спецификацию через task graph.
+- `/do-ask-questions` — опрос требований и классификация изменения.
+- `/do-plan-and-specs` — спецификация, task graph, план и отдельная ветка.
+- `/do-tdd-loop` — тесты, RED, минимальная реализация и GREEN.
+- `/do-review` — review требований и стандартов, валидация набора и проверки.
+- `/do-branch-to-master` — подтверждённые commit, push, MR, merge и production pull.
 
 ### Будущие команды
 
-- `/to-spec` — преобразовать результаты опроса в формальную спецификацию.
-- `/to-tickets` — разбить спецификацию на независимые задачи с зависимостями.
-- `/review` — запустить финальное ревью и собрать результат в отчёт.
-- `/validate-kit` — проверить структуру репозитория, ссылки, metadata и секреты.
+- `/do-documentation` — подготовка и проверка документации.
+- `/do-security-review` — отдельная проверка security-sensitive изменений.
+- `/do-release` — релизный чеклист после merge в `master`.
 
-Skills можно вызывать по именам: `interrogate`, `spec-plan`, `tdd-loop`, `orchestrate`, `worktree-isolation`, `classify-change`, `code-review`, `implement-spec`.
+Подробные внутренние skills Matt Pocock (`tdd`, `code-review`, `classify-change`, `implement-spec`) сохранены как строительные блоки, но не требуют отдельных пользовательских команд.
 
 ## Проверка набора
 
