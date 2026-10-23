@@ -24,11 +24,31 @@ your-project/
 
 ## Команды
 
+### Текущие команды
+
 - `/interrogate` — задать 3–5 вопросов до написания кода.
 - `/spec-plan` — сформировать scope, контракты, критерии приёмки и план.
 - `/tdd-loop` — написать тесты, подтвердить RED и довести реализацию до GREEN.
+- `/classify-change` — оценить риск изменения и необходимые проверки.
+- `/code-review` — провести отдельное ревью изменений по требованиям и стандартам.
+- `/implement-spec` — реализовать утверждённую спецификацию через task graph.
 
-Skills можно вызывать по именам: `interrogate`, `spec-plan`, `tdd-loop`, `orchestrate`, `worktree-isolation`.
+### Будущие команды
+
+- `/to-spec` — преобразовать результаты опроса в формальную спецификацию.
+- `/to-tickets` — разбить спецификацию на независимые задачи с зависимостями.
+- `/review` — запустить финальное ревью и собрать результат в отчёт.
+- `/validate-kit` — проверить структуру репозитория, ссылки, metadata и секреты.
+
+Skills можно вызывать по именам: `interrogate`, `spec-plan`, `tdd-loop`, `orchestrate`, `worktree-isolation`, `classify-change`, `code-review`, `implement-spec`.
+
+## Проверка набора
+
+```bash
+python scripts/check.py
+```
+
+Проверка выполняется без сети и проверяет frontmatter skills, локальные Markdown-ссылки, JSON/TOML, секреты и структуру набора.
 
 ## Definition of Done
 
@@ -51,6 +71,11 @@ templates/
 ├── specification.md          # Шаблон спецификации
 └── task-breakdown.md         # Шаблон декомпозиции
 ```
+
+## Дополнительные материалы
+
+- `scripts/check.py` — локальный валидатор репозитория.
+- `docs/pipeline-source/` — происхождение и лицензия перенесённых материалов Matt Pocock.
 
 ## Принцип работы
 
