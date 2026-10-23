@@ -38,6 +38,17 @@ class WorkflowAssetsTests(unittest.TestCase):
         ):
             self.assertIn(required, text)
 
+    def test_workflow_documents_delegation_and_sources(self):
+        orchestration = (SKILLS / "orchestrate" / "SKILL.md").read_text(encoding="utf-8")
+        plan = (SKILLS / "do-plan-and-specs" / "SKILL.md").read_text(encoding="utf-8")
+        sources = ROOT / "docs" / "agent-workflows.md"
+        self.assertTrue(sources.is_file())
+        self.assertIn("субагент", orchestration.lower())
+        self.assertIn("дорог", orchestration.lower())
+        self.assertIn("провер", plan.lower())
+        self.assertIn("Anthropic", sources.read_text(encoding="utf-8"))
+        self.assertIn("OpenAI", sources.read_text(encoding="utf-8"))
+
 
 if __name__ == "__main__":
     unittest.main()
