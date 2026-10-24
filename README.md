@@ -24,8 +24,6 @@ your-project/
 
 ## Команды
 
-### Текущие команды
-
 - `/do-ask-questions` — опрос требований и классификация изменения.
 - `/do-plan-and-specs` — спецификация, task graph, план и отдельная ветка.
 - `/do-tdd-loop` — тесты, RED, минимальная реализация и GREEN.
@@ -35,11 +33,6 @@ your-project/
 - `/do-security-review` — отдельная проверка security-sensitive изменений.
 - `/do-roadmap` — анализ развития проекта, фич, рефакторинга и приоритизированный план с чекбоксами.
 
-### Будущие команды
-
-Пока нет.
-
-Подробные внутренние skills Matt Pocock (`tdd`, `code-review`, `classify-change`, `implement-spec`) сохранены как строительные блоки, но не требуют отдельных пользовательских команд.
 
 ## Definition of Done
 
