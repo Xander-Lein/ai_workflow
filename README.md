@@ -31,12 +31,14 @@ your-project/
 - `/do-tdd-loop` — тесты, RED, минимальная реализация и GREEN.
 - `/do-review` — review требований и стандартов, валидация набора и проверки.
 - `/do-branch-to-master` — подтверждённые commit, push, MR, merge и production pull.
+- `/do-documentation` — подготовка и проверка документации.
+- `/do-security-review` — отдельная проверка security-sensitive изменений.
+- `/do-release` — release-checklist, который запускается после merge в `master`.
+- `/do-roadmap` — анализ развития проекта, фич, рефакторинга и приоритизированный план с чекбоксами.
 
 ### Будущие команды
 
-- `/do-documentation` — подготовка и проверка документации.
-- `/do-security-review` — отдельная проверка security-sensitive изменений.
-- `/do-release` — релизный чеклист после merge в `master`.
+Пока нет.
 
 Подробные внутренние skills Matt Pocock (`tdd`, `code-review`, `classify-change`, `implement-spec`) сохранены как строительные блоки, но не требуют отдельных пользовательских команд.
 
