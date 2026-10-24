@@ -30,10 +30,9 @@ your-project/
 - `/do-plan-and-specs` — спецификация, task graph, план и отдельная ветка.
 - `/do-tdd-loop` — тесты, RED, минимальная реализация и GREEN.
 - `/do-review` — review требований и стандартов, валидация набора и проверки.
-- `/do-branch-to-master` — подтверждённые commit, push, MR, merge и production pull.
+- `/do-branch-to-master` — `/do-documentation`, подтверждённые commit, push, MR, merge, release-checklist и production pull.
 - `/do-documentation` — подготовка и проверка документации.
 - `/do-security-review` — отдельная проверка security-sensitive изменений.
-- `/do-release` — release-checklist, который запускается после merge в `master`.
 - `/do-roadmap` — анализ развития проекта, фич, рефакторинга и приоритизированный план с чекбоксами.
 
 ### Будущие команды
