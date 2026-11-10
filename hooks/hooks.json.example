@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeReadFile": [
+      {
+        "command": ".venv/Scripts/python.exe .cursor/hooks/deny_secrets_read.py",
+        "matcher": "Read",
+        "failClosed": false
+      }
+    ],
+    "preToolUse": [
+      {
+        "command": ".venv/Scripts/python.exe .cursor/hooks/deny_prod_write.py",
+        "matcher": "Write|StrReplace|Delete|EditNotebook",
+        "failClosed": false
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": ".venv/Scripts/python.exe .cursor/hooks/deny_prod_write.py",
+        "failClosed": false
+      },
+      {
+        "command": ".venv/Scripts/python.exe .cursor/hooks/update_docs_precommit.py",
+        "matcher": "git commit",
+        "failClosed": false
+      }
+    ]
+  }
+}
