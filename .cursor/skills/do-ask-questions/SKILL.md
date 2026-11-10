@@ -1,25 +1,25 @@
 ---
 name: do-ask-questions
-description: Conduct requirements interrogation and change-risk classification before implementation. Use for any new feature, bug fix, refactor, or task with uncertain scope.
+description: Requirements interview and change-risk classification before implementation. Use for any new feature, bug fix, refactor, or task with uncertain scope.
 disable-model-invocation: true
 ---
 
-# Опрос требований
+# Requirements interview
 
-## Чеклист
+## Checklist
 
-- [ ] 1. Прочитать запрос, доступный контекст и существующие ограничения.
-- [ ] 2. Проверить, какие требования уже известны, чтобы не задавать лишние вопросы.
-- [ ] 3. Задать 3–5 вопросов о цели, входах, выходах, граничных случаях, ограничениях и критериях приёмки.
-- [ ] 4. Определить тип изменения: feature, bug fix, refactor, documentation или configuration.
-- [ ] 5. Оценить риск, затронутые контракты и обязательные проверки.
-- [ ] 6. Повторить пользователю понятые требования и зафиксировать открытые решения.
-- [ ] 7. Остановиться и дождаться ответов; основной код до этого не писать.
+- [ ] 1. Read the request, available context, and existing constraints.
+- [ ] 2. See what is already known; avoid redundant questions.
+- [ ] 3. Ask 3–5 questions about goal, inputs, outputs, edge cases, constraints, and acceptance criteria.
+- [ ] 4. Classify the change: feature, bug fix, refactor, documentation, or configuration.
+- [ ] 5. Assess risk, affected contracts, and mandatory verification.
+- [ ] 6. Summarize understood requirements and open decisions for the user.
+- [ ] 7. Stop and wait for answers; do not write main code before that.
 
-## Правила
+## Rules
 
-- Не спрашивай то, что уже явно указано пользователем или найдено в коде.
-- Для bug fix уточни воспроизводимость, ожидаемое и фактическое поведение.
-- Для feature уточни публичный контракт и критерии приёмки.
-- Для refactor уточни, какое поведение должно остаться неизменным.
-- Результат передай в `do-plan-and-specs`.
+- Do not ask what the user or codebase already states clearly.
+- For bug fixes: reproduction, expected vs actual behavior.
+- For features: public contract and acceptance criteria.
+- For refactors: behavior that must stay unchanged.
+- Hand off to `/do-new-feature` after answers (not legacy plan/tdd/docs commands).

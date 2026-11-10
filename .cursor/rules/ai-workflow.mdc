@@ -5,34 +5,25 @@ alwaysApply: true
 
 # AI-Driven Development Workflow
 
-Применяй этот порядок к новым задачам разработки:
+Apply this order to new development tasks:
 
-1. **Опрос** — если требования неполные, задай 3–5 вопросов о цели, входах, выходах, граничных случаях и ограничениях. Не пиши основной код до ответов.
-2. **Спецификация** — зафиксируй scope, контракты, критерии приёмки, риски и пошаговый план.
-3. **TDD** — напиши тесты по критериям до реализации; запусти их и зафиксируй RED; реализуй минимальное решение; повторяй запуск, чтение ошибок и исправление до GREEN.
-4. **Оркестрация** — сложную задачу разбей на независимые подзадачи с собственными критериями проверки.
-5. **Изоляция** — для параллельной или рискованной работы используй отдельные ветки или Git worktrees.
+1. **Clarify** — if requirements are incomplete, ask 3–5 questions about goal, inputs, outputs, edge cases, and constraints. Do not write main code before answers.
+2. **Specify** — fix scope, contracts, acceptance criteria, risks, and a step plan.
+3. **TDD** — write tests from the spec before implementation; run and expect RED; implement minimally; iterate to GREEN.
+4. **Orchestrate** — split complex work into independent subtasks with their own acceptance checks.
+5. **Isolate** — use branches or Git worktrees for parallel or risky work.
 
-## Оркестрация моделей и субагентов
+## Subagents
 
-- Сначала оцени, нужен ли вообще multi-agent workflow. Простую задачу выполняй одним агентом.
-- Если задача сложная, дорогая модель может быть координатором: она уточняет контракт,
-  разбивает работу и собирает результат, а независимые рутинные части передаёт субагентам.
-- Передавай субагенту узкую цель, минимальный контекст, границы файлов, критерии приёмки
-  и команду проверки. Ограничивай его инструменты и права необходимым минимумом.
-- Параллельно запускай только независимые задачи. Общие файлы редактируй последовательно
-  или в отдельных worktrees.
-- Результат субагента проверяй свежим контекстом: diff, тестами и критериями. Сообщение
-  «готово» не является доказательством.
-- Ограничивай concurrency, review-раунды и стоимость. После трёх безрезультатных
-  раундов пересмотри подход, а не запускай бесконечный цикл.
-- Если runtime не поддерживает субагентов или делегирование, выполняй задачу последовательно
-  и явно сообщай это ограничение.
+- Start by deciding whether multi-agent workflow is needed. Simple tasks: one agent.
+- For complex work, a stronger model can coordinate: clarify contract, split work, verify subagent output with fresh diff and tests.
+- Limit concurrency and review rounds; after three unproductive rounds, change approach.
+- If subagents are unavailable, work sequentially and state that limitation.
 
-## Обязательные ограничения
+## Hard rules
 
-- Не утверждай, что задача готова без фактической проверки.
-- Не удаляй пользовательские данные без явного разрешения.
-- Не скрывай падение тестов: показывай причину и текущий статус.
-- После каждого существенного изменения запускай релевантные проверки.
-- В финале перечисли изменённые файлы, проверки и оставшиеся ограничения.
+- Do not claim done without running relevant checks.
+- Do not delete user data without explicit permission.
+- Do not hide failing tests; show cause and status.
+- After substantive changes, run relevant verification.
+- In the final message, list changed files, checks run, and remaining limitations.

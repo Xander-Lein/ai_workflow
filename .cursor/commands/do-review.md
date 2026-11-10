@@ -1,7 +1,7 @@
 # /do-review
 
-Используй skill `do-review`.
+Use skill `do-review`.
 
-Проведи проверку diff по требованиям и стандартам, запусти валидатор набора и релевантные тесты, затем выдай findings, исправления и ограничения отдельными разделами.
+Review the diff against requirements and standards, run validators and relevant tests, then report findings, fixes, and limitations in separate sections.
 
-Используй свежий контекст для review, подтверждай findings отдельной проверкой, ограничивай число раундов и явно указывай, где требуется human approval или rollback.
+Use fresh context for review, verify findings independently, cap review rounds, and call out where human approval or rollback is required.
