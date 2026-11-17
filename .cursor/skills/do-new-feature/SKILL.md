@@ -15,6 +15,12 @@ description: End-to-end feature delivery: spec, TDD, documentation, verification
 6. Run project checks (pytest, lint, CI entrypoint).
 7. Report: files changed, tests run, docs updated, open risks.
 
+## Deep references (quality)
+
+- **TDD**: read skill `tdd` (`tests.md`, `mocking.md`) for RED/GREEN, seams, anti-patterns.
+- **Risk**: after `/do-ask-questions`, use `classify-change` when the host repo enables it.
+- **Parallel work**: `worktree-isolation` before branching risky or concurrent tasks.
+
 ## Rules
 
 - Do not skip tests for non-trivial behavior.

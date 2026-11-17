@@ -56,6 +56,19 @@ Contents come from this repo's `.cursor/` (robocopy/rsync). Existing `hooks.json
 | `/do-branch-to-dev` | Feature → **dev** (GitLab first, else GitHub) |
 | `/do-dev-to-prod` | **dev** → **master/main** (template; override in host) |
 
+### Запланировано (domain packs)
+
+| Command | Skill | Note |
+|---------|--------|------|
+| `/do-ux_ui` | `do-ux_ui` | UX/UI — stub in git |
+| `/do-analytics` | `do-analytics` | Analytics — stub |
+| `/do-system_design` | `do-system_design` | Architecture — stub |
+| `/do-development` | `do-development` | Backend / frontend / devops — stub references |
+
+При вызове агент должен учитывать знания из соответствующего skill по мере заполнения; пока контент TBD — связка с `/do-new-feature` или `/do-ask-questions`.
+
+Shared helpers (no slash): `classify-change`, `code-review`, `tdd`, `worktree-isolation` — см. [`.cursor/skills/README.md`](.cursor/skills/README.md).
+
 ## Hooks
 
 Under `.cursor/hooks/` — see [`.cursor/hooks/README.md`](.cursor/hooks/README.md). Example wiring: [`.cursor/hooks/hooks.json.example`](.cursor/hooks/hooks.json.example).
