@@ -1,6 +1,6 @@
 # AI Workflow for Cursor
 
-User-level delivery of commands, skills, rules, and hooks for agent-driven development.
+User-level delivery of skills, rules, and hooks for agent-driven development. Slash menu entries are the skill folder names. There is no `.cursor/commands/` copy: that duplicated every `/do-*` item.
 
 ## Layout (this repo)
 
@@ -46,7 +46,7 @@ Contents come from this repo's `.cursor/` (robocopy/rsync). Existing `hooks.json
 
 **Project repos** still use their own `.cursor/hooks.json` and overrides (e.g. `dev-to-prod/gitlab-mr.ps1` in myfin). User-level skills apply globally; project skills merge per Cursor discovery rules.
 
-## Slash commands
+## Slash skills
 
 | Command | Role |
 |---------|------|
