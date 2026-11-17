@@ -1,9 +1,9 @@
 ---
-name: do-analytics
-description: Planned analytics domain pack (SQL, ETL, BI, data quality). On /do-analytics, apply skill knowledge when present; else do-new-feature with analytics constraints.
+name: consider-analytics
+description: Planned analytics domain pack (SQL, ETL, BI, data quality). On /consider-analytics, apply skill knowledge when present; else do-new-feature with analytics constraints.
 ---
 
-# /do-analytics (planned)
+# /consider-analytics (planned)
 
 **Status:** content TBD.
 

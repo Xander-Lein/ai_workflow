@@ -60,10 +60,10 @@ Contents come from this repo's `.cursor/` (robocopy/rsync). Existing `hooks.json
 
 | Command | Skill | Note |
 |---------|--------|------|
-| `/do-ux_ui` | `do-ux_ui` | UX/UI — stub in git |
-| `/do-analytics` | `do-analytics` | Analytics — stub |
-| `/do-system_design` | `do-system_design` | Architecture — stub |
-| `/do-development` | `do-development` | Backend / frontend / devops — stub references |
+| `/consider-ux_ui` | `consider-ux_ui` | UX/UI — stub in git |
+| `/consider-analytics` | `consider-analytics` | Analytics — stub |
+| `/consider-system_design` | `consider-system_design` | Architecture — stub |
+| `/consider-development` | `consider-development` | Backend / frontend / devops — stub references |
 
 При вызове агент должен учитывать знания из соответствующего skill по мере заполнения; пока контент TBD — связка с `/do-new-feature` или `/do-ask-questions`.
 

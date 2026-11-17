@@ -1,9 +1,9 @@
 ---
-name: do-ux_ui
-description: Planned UX/UI domain pack. On /do-ux_ui, apply knowledge from this skill and references once added; until then guide via do-new-feature with UX focus.
+name: consider-ux_ui
+description: Planned UX/UI domain pack. On /consider-ux_ui, apply knowledge from this skill and references once added; until then guide via do-new-feature with UX focus.
 ---
 
-# /do-ux_ui (planned)
+# /consider-ux_ui (planned)
 
 **Status:** content TBD.
 
