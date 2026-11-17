@@ -12,7 +12,7 @@ $ErrorActionPreference = "Stop"
 $Here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $Target = Join-Path $env:USERPROFILE "workflow_autoupdate"
 
-if ($Here -ne $Target) {
+if ((Resolve-Path $Here).Path -ne (Resolve-Path $Target).Path) {
     New-Item -ItemType Directory -Force -Path $Target | Out-Null
     Copy-Item -Path (Join-Path $Here "*") -Destination $Target -Recurse -Force
 }

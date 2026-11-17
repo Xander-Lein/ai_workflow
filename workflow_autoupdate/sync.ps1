@@ -1,6 +1,6 @@
 #Requires -Version 5.1
 <#
-  Pull (or clone) ai_workflow and merge .cursor/ into %USERPROFILE%\.cursor\
+  Pull (or clone) ai_workflow and merge .cursor into the user profile .cursor folder.
   Does not overwrite an existing hooks.json unless -OverwriteHooksJson.
 #>
 param(
@@ -11,7 +11,7 @@ $ErrorActionPreference = "Stop"
 $Here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $ConfigPath = Join-Path $Here "config.ps1"
 if (-not (Test-Path $ConfigPath)) {
-    Write-Error "Missing $ConfigPath — copy from config.example and set AI_WORKFLOW_*."
+    Write-Error "Missing $ConfigPath - copy from config.example and set AI_WORKFLOW_*."
 }
 
 . $ConfigPath
