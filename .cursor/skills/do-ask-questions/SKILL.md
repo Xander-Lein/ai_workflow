@@ -1,25 +1,31 @@
 ---
 name: do-ask-questions
-description: Conduct requirements interrogation and change-risk classification before implementation. Use for any new feature, bug fix, refactor, or task with uncertain scope.
+description: >-
+  Requirements interview before implementation. Research the repo first, then ask
+  only via the AskQuestion tool. Recap Q&A in chat and offer /do-new-feature.
 disable-model-invocation: true
 ---
 
-# Опрос требований
+# Requirements interview
 
-## Чеклист
+## Checklist
 
-- [ ] 1. Прочитать запрос, доступный контекст и существующие ограничения.
-- [ ] 2. Проверить, какие требования уже известны, чтобы не задавать лишние вопросы.
-- [ ] 3. Задать 3–5 вопросов о цели, входах, выходах, граничных случаях, ограничениях и критериях приёмки.
-- [ ] 4. Определить тип изменения: feature, bug fix, refactor, documentation или configuration.
-- [ ] 5. Оценить риск, затронутые контракты и обязательные проверки.
-- [ ] 6. Повторить пользователю понятые требования и зафиксировать открытые решения.
-- [ ] 7. Остановиться и дождаться ответов; основной код до этого не писать.
+- [ ] 1. Read the request and host constraints (`AGENTS.md`, rules).
+- [ ] 2. **Research before ask.** Search the codebase for the feature area, existing contracts, and similar code. Drop any question the repo already answers. Note assumptions from code in one short paragraph (not a question).
+- [ ] 3. Classify: feature, bug fix, refactor, documentation, or configuration. Note risk and required checks (use `classify-change` if the host enables it).
+- [ ] 4. **Ask only through the AskQuestion tool** (client window with options). Do not ask the 3–5 questions as plain chat text. Batch related questions in one form (about 3–5). Topics: goal, inputs/outputs, edge cases, constraints, acceptance criteria. Skip anything already known.
+- [ ] 5. After the user answers, **write a Q&A recap in the chat** as a table:
 
-## Правила
+| # | Question | Answer |
+|---|----------|--------|
 
-- Не спрашивай то, что уже явно указано пользователем или найдено в коде.
-- Для bug fix уточни воспроизводимость, ожидаемое и фактическое поведение.
-- Для feature уточни публичный контракт и критерии приёмки.
-- Для refactor уточни, какое поведение должно остаться неизменным.
-- Результат передай в `do-plan-and-specs`.
+- [ ] 6. Then either:
+  - another AskQuestion round if blocking gaps remain, or
+  - stop and offer **`/do-new-feature`** (recommended next step). Do not start implementation in this command.
+
+## Rules
+
+- Research first; questions second.
+- Bug: reproduction, expected vs actual. Feature: contract and acceptance. Refactor: behavior that must stay the same.
+- No main code before answers.
+- Hand off to `/do-new-feature` only after the recap is in the chat.

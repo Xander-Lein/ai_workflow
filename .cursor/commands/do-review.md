@@ -1,7 +1,7 @@
 # /do-review
 
-Используй skill `do-review`.
+Use skill `do-review`.
 
-Проведи проверку diff по требованиям и стандартам, запусти валидатор набора и релевантные тесты, затем выдай findings, исправления и ограничения отдельными разделами.
+Review the diff on three axes: Standards, Spec, and Security (mandatory update-mode pass). If the host has `do-security-review`, run that skill as the security subprocess.
 
-Используй свежий контекст для review, подтверждай findings отдельной проверкой, ограничивай число раундов и явно указывай, где требуется human approval или rollback.
+Use fresh context for review, verify findings independently, cap review rounds, and call out where human approval or rollback is required.

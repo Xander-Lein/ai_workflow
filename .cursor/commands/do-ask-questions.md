@@ -1,5 +1,5 @@
 # /do-ask-questions
 
-Используй skill `do-ask-questions`.
+Use skill `do-ask-questions`.
 
-Проведи опрос требований и классифицируй задачу до написания кода. Задай только необходимые вопросы, зафиксируй риск, тип изменения и обязательные проверки. Остановись до получения ответов пользователя.
+Research the repo first. Ask only via the AskQuestion tool. Recap Q&A in chat, then another round or offer `/do-new-feature`. Do not write main code.
