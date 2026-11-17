@@ -1,61 +1,71 @@
 # AI Workflow for Cursor
 
-Portable rules, skills, slash commands, and **project hooks** for agent-driven development.
+User-level delivery of commands, skills, rules, and hooks for agent-driven development.
 
-Based on a five-step loop ([overview video](https://www.youtube.com/watch?v=1tCfHLFnXSw)): clarify → plan & implement with tests → document → review → ship (branch / dev / prod).
+## Layout (this repo)
 
-## Install
-
-```powershell
-git clone https://github.com/Xander-Lein/ai_workflow.git
-cd your-project
-..\ai_workflow\scripts\install.ps1 -TargetRoot (Get-Location)
+```text
+ai_workflow/
+├── .cursor/              # synced to the user profile (see below)
+├── workflow_autoupdate/  # install + daily git pull → sync
+├── LICENSE
+└── README.md
 ```
 
-This copies:
+## Install (recommended)
 
-- `.cursor/commands`, `.cursor/rules`, `.cursor/skills`
-- Hook scripts into `.cursor/hooks/` (secrets, prod write guard, docs pre-commit)
-- Creates `.cursor/hooks.json` from [`hooks/hooks.json.example`](hooks/hooks.json.example) if missing
+### Windows
 
-Point `command` entries in `hooks.json` at your venv Python. See [`docs/hooks.md`](docs/hooks.md).
+From a clone of this repo:
+
+```powershell
+.\workflow_autoupdate\install.ps1
+```
+
+This copies scripts to `%USERPROFILE%\workflow_autoupdate\`, writes `config.ps1`, runs the first sync, and registers **Task Scheduler** job `AIWorkflowCursorSync` (daily 06:00).
+
+Manual sync: `%USERPROFILE%\workflow_autoupdate\sync.ps1`
+
+### Linux
+
+```bash
+chmod +x workflow_autoupdate/install.sh workflow_autoupdate/sync.sh
+./workflow_autoupdate/install.sh
+```
+
+Installs `~/workflow_autoupdate/`, first sync, and a **cron** entry (06:00).
+
+### Sync target
+
+```
+Windows: %USERPROFILE%\.cursor\
+Linux:   ~/.cursor/
+```
+
+Contents come from this repo's `.cursor/` (robocopy/rsync). Existing `hooks.json` is kept unless you pass `-OverwriteHooksJson` on Windows.
+
+**Project repos** still use their own `.cursor/hooks.json` and overrides (e.g. `dev-to-prod/gitlab-mr.ps1` in myfin). User-level skills apply globally; project skills merge per Cursor discovery rules.
 
 ## Slash commands
 
 | Command | Role |
 |---------|------|
-| `/do-ask-questions` | Requirements interview and change classification |
-| `/do-new-feature` | Plan → TDD (RED/GREEN) → docs sync → summary (replaces separate plan/tdd/docs commands) |
-| `/do-review` | Code review, security-sensitive diff, improvement gaps |
-| `/do-branch-to-dev` | Branch hygiene and merge request toward dev |
-| `/do-dev-to-prod` | Release checklist template (override in your project for prod specifics) |
+| `/do-ask-questions` | Requirements + risk before code |
+| `/do-new-feature` | Spec → TDD → docs → verification |
+| `/do-review` | Diff review |
+| `/do-branch-to-dev` | Feature → **dev** (GitLab first, else GitHub) |
+| `/do-dev-to-prod` | **dev** → **master/main** (template; override in host) |
 
-Domain skills (`/do-analytics`, `/do-ux_ui`, …) and `programs/*` (Tableau, GTM, YouTrack) are reserved for future knowledge packs.
+## Hooks
+
+Under `.cursor/hooks/` — see [`.cursor/hooks/README.md`](.cursor/hooks/README.md). Example wiring: [`.cursor/hooks/hooks.json.example`](.cursor/hooks/hooks.json.example).
+
+Tests: `py -m pytest .cursor/hooks/tests -q`
 
 ## Definition of Done
 
-A task is done only when:
-
-- Acceptance criteria are met
-- Tests were written against the spec and pass after implementation
-- Relevant README/docs are staged (enforced by `update_docs_precommit` on agent `git commit` when hooks are enabled)
-- Complex work used branches or worktrees where appropriate
-
-## Repo layout
-
-```text
-ai_workflow/
-├── README.md
-├── WORKFLOW.md
-├── docs/hooks.md
-├── hooks/                    # install → .cursor/hooks/
-├── scripts/install.ps1
-└── .cursor/
-    ├── commands/
-    ├── rules/
-    └── skills/
-```
+Acceptance criteria met, relevant tests green, docs staged when hooks are enabled, no false "done" without checks.
 
 ## Attribution
 
-Skills `implement-spec`, `classify-change`, `code-review`, and `tdd` are derived from [mattpocock/skills](https://github.com/mattpocock/skills) (MIT, Copyright (c) 2026 Matt Pocock). See LICENSE in upstream skill copies.
+Skills derived from [mattpocock/skills](https://github.com/mattpocock/skills) (MIT) where noted in skill headers.

@@ -23,7 +23,7 @@ GIT_ADD_RE = re.compile(r"\bgit\s+add\s+([^;&|]+)", re.I)
 COMMIT_ALL_RE = re.compile(r"\bcommit\b[^;&|]*(-a|--all)\b|(-a|--all)[^;&|]*\bcommit\b", re.I)
 
 AGENTS_DOC = os.environ.get("DOCS_AGENTS_FILE", "AGENTS.md")
-CI_DOC = os.environ.get("DOCS_CI_FILE", "docs/hooks.md")
+CI_DOC = os.environ.get("DOCS_CI_FILE", "README.md")
 HOOKS_DOC = os.environ.get("DOCS_HOOKS_FILE", CI_DOC)
 
 

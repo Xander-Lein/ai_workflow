@@ -1,3 +1,5 @@
 # /do-dev-to-prod
 
-Template release path **dev → prod**: MR merged, prod pull/deploy checklist, smoke tests. Override this file in your project for real prod paths and secrets.
+Use skill `do-dev-to-prod` (override in the host repo for prod paths and GitLab).
+
+On **dev**: show dev-not-on-prod table, push, MR/PR to **master/main**, merge, report. Never delete `dev`, `master`, or `main`.

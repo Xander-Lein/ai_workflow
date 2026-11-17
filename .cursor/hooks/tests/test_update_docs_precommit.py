@@ -9,8 +9,9 @@ from pathlib import Path
 
 import pytest
 
-ROOT = Path(__file__).resolve().parents[2]
-HOOK = ROOT / "hooks" / "update_docs_precommit.py"
+HOOKS_DIR = Path(__file__).resolve().parents[1]
+REPO_ROOT = HOOKS_DIR.parents[1]
+HOOK = HOOKS_DIR / "update_docs_precommit.py"
 PY = Path(sys.executable)
 
 sys.path.insert(0, str(HOOK.parent))
@@ -18,7 +19,7 @@ import update_docs_precommit as hook  # noqa: E402
 
 
 def test_required_docs_hooks_folder() -> None:
-    assert hook.required_docs_for_code({"hooks/deny_prod_write.py"}) == {"docs/hooks.md"}
+    assert hook.required_docs_for_code({".cursor/hooks/deny_prod_write.py"}) == {"README.md"}
 
 
 def test_doc_triggers() -> None:
@@ -34,7 +35,7 @@ def test_hook_allows_non_commit() -> None:
         input=json.dumps({"command": "git status"}),
         text=True,
         capture_output=True,
-        cwd=str(ROOT),
+        cwd=str(REPO_ROOT),
         check=False,
     )
     assert proc.returncode == 0

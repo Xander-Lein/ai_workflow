@@ -1,0 +1,6 @@
+# Copy to config (config.ps1 / config.sh) — not committed.
+# Repository to sync into the user ~/.cursor tree.
+AI_WORKFLOW_REPO_URL=https://github.com/Xander-Lein/ai_workflow.git
+AI_WORKFLOW_BRANCH=main
+# Daily sync pulls here, then copies .cursor/ → user profile.
+AI_WORKFLOW_CLONE_DIR=
