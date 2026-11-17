@@ -2,4 +2,4 @@
 
 Use skill `do-new-feature`.
 
-After `/do-ask-questions` (or if scope is already clear): produce a short spec, run TDD (RED → GREEN), update relevant README/docs, run checks, and report what changed.
+Spec, then tester subagent (tests + report) and implementer subagent (product code). Loop until GREEN. Update docs, run checks, report both roles.

@@ -1,6 +1,8 @@
 ---
 name: do-ask-questions
-description: Requirements interview and change-risk classification before implementation. Use for any new feature, bug fix, refactor, or task with uncertain scope.
+description: >-
+  Requirements interview before implementation. Research the repo first, then ask
+  only via the AskQuestion tool. Recap Q&A in chat and offer /do-new-feature.
 disable-model-invocation: true
 ---
 
@@ -8,18 +10,22 @@ disable-model-invocation: true
 
 ## Checklist
 
-- [ ] 1. Read the request, available context, and existing constraints.
-- [ ] 2. See what is already known; avoid redundant questions.
-- [ ] 3. Ask 3–5 questions about goal, inputs, outputs, edge cases, constraints, and acceptance criteria.
-- [ ] 4. Classify the change: feature, bug fix, refactor, documentation, or configuration.
-- [ ] 5. Assess risk, affected contracts, and mandatory verification.
-- [ ] 6. Summarize understood requirements and open decisions for the user.
-- [ ] 7. Stop and wait for answers; do not write main code before that.
+- [ ] 1. Read the request and host constraints (`AGENTS.md`, rules).
+- [ ] 2. **Research before ask.** Search the codebase for the feature area, existing contracts, and similar code. Drop any question the repo already answers. Note assumptions from code in one short paragraph (not a question).
+- [ ] 3. Classify: feature, bug fix, refactor, documentation, or configuration. Note risk and required checks (use `classify-change` if the host enables it).
+- [ ] 4. **Ask only through the AskQuestion tool** (client window with options). Do not ask the 3–5 questions as plain chat text. Batch related questions in one form (about 3–5). Topics: goal, inputs/outputs, edge cases, constraints, acceptance criteria. Skip anything already known.
+- [ ] 5. After the user answers, **write a Q&A recap in the chat** as a table:
+
+| # | Question | Answer |
+|---|----------|--------|
+
+- [ ] 6. Then either:
+  - another AskQuestion round if blocking gaps remain, or
+  - stop and offer **`/do-new-feature`** (recommended next step). Do not start implementation in this command.
 
 ## Rules
 
-- Do not ask what the user or codebase already states clearly.
-- For bug fixes: reproduction, expected vs actual behavior.
-- For features: public contract and acceptance criteria.
-- For refactors: behavior that must stay unchanged.
-- Hand off to `/do-new-feature` after answers (not legacy plan/tdd/docs commands).
+- Research first; questions second.
+- Bug: reproduction, expected vs actual. Feature: contract and acceptance. Refactor: behavior that must stay the same.
+- No main code before answers.
+- Hand off to `/do-new-feature` only after the recap is in the chat.

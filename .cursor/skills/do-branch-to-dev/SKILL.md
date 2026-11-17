@@ -23,11 +23,12 @@ Language: follow the user. Do not print credentials or secret values.
 - [ ] 2. Credentials GitLab then GitHub (silent if OK)
 - [ ] 3. Commit only changes tied to this chat
 - [ ] 4. Table: other uncommitted work (default excluded from commit)
-- [ ] 5. Local CI (pre-push) per host repo
-- [ ] 6. Push source branch
-- [ ] 7. Open MR/PR → dev + approve + merge (CI: local required; remote if runner up)
-- [ ] 8. Delete feature branch only (not dev/master/main)
-- [ ] 9. Tables: shipped to dev; on dev not on prod
+- [ ] 5. Security gate (update-mode review; no blocking Security findings)
+- [ ] 6. Local CI (pre-push) per host repo
+- [ ] 7. Push source branch
+- [ ] 8. Open MR/PR → dev + approve + merge (CI: local required; remote if runner up)
+- [ ] 9. Delete feature branch only (not dev/master/main)
+- [ ] 10. Tables: shipped to dev; on dev not on prod
 ```
 
 ## 1. Branch sync
@@ -67,15 +68,23 @@ Populate `short_description` from `git diff --stat`, last commit subject, or tra
 
 List unpushed commits: `git log origin/dev..HEAD --oneline` (adjust default integration branch via host config).
 
-## 5. Local CI before push
+## 5. Security gate
+
+Before push, run `/do-review` security update mode on the commits about to ship (skill `do-review`, axis **Security** only is enough if Standards/Spec were just done in this chat).
+
+- If `.cursor/skills/do-security-review/SKILL.md` exists, that subprocess is mandatory (same as `do-review`).
+- **Blocking** Security findings (high/critical, or host skill says human approval): stop. Do not push until fixed or the user explicitly waives them in this chat.
+- Record one line: `security: clear` or `security: waived by user`.
+
+## 6. Local CI before push
 
 Run the host pre-push entrypoint (e.g. `python scripts/ci_checks.py pre-push`). Fail → stop, no push.
 
-## 6. Push
+## 7. Push
 
 `git push -u origin HEAD` or named feature branch. If `dev` is protected, push `feat/<slug>` as MR source.
 
-## 7. MR/PR → `dev`
+## 8. MR/PR → `dev`
 
 - **GitLab first** (project script create → approve → merge) if check passed in step 2.
 - Else **GitHub** `gh pr create --base dev` (or `main` if that is integration — read host docs).
@@ -86,11 +95,11 @@ Merge policy:
 - **Do not** wait on remote CI if no runner / pipeline unavailable (as host dev-to-prod skill).
 - If runner is available and project requires it, wait for green before merge.
 
-## 8. Cleanup
+## 9. Cleanup
 
 Delete **only** the merged feature branch (local + remote). **Do not** delete `dev`, `master`, `main`.
 
-## 9. Report tables
+## 10. Report tables
 
 **Shipped to dev** (this promotion):
 

@@ -1,28 +1,39 @@
 ---
 name: do-new-feature
-description: End-to-end feature delivery: spec, TDD, documentation, verification. Use after do-ask-questions or when requirements are explicit.
+description: >-
+  Spec then split tester and implementer subagents: tester writes/runs tests and
+  reports failures; implementer changes product code until GREEN. Then docs and checks.
 ---
 
-# New feature (single command)
+# New feature
 
 ## Checklist
 
-1. Confirm scope and acceptance criteria (from chat or `/do-ask-questions`).
-2. Write a brief spec: inputs, outputs, edge cases, files in scope.
-3. Add or extend tests for acceptance criteria; run and expect RED.
-4. Implement minimal code; iterate until tests GREEN.
-5. Update README/docs required by project hooks or AGENTS.md.
-6. Run project checks (pytest, lint, CI entrypoint).
-7. Report: files changed, tests run, docs updated, open risks.
+1. Confirm scope from chat or the Q&A recap of `/do-ask-questions`.
+2. Short spec: inputs, outputs, edge cases, files in scope. Name public seams (skill `tdd`).
+3. **Split roles** (two subagents when the Task tool is available; otherwise two sequential passes by the same agent, still reported separately):
 
-## Deep references (quality)
+   | Role | May edit | Must do |
+   |------|----------|---------|
+   | **Tester** | tests only (`test_*.py`, `**/tests/**`) | Add/adjust tests for acceptance criteria; run them; report RED/GREEN, failures, and recommendations. Do not change product code. |
+   | **Implementer** | product code, not tests (unless the tester asked for a fixture-only fix) | Minimal code to satisfy the tester report. Do not weaken assertions to go green. |
 
-- **TDD**: read skill `tdd` (`tests.md`, `mocking.md`) for RED/GREEN, seams, anti-patterns.
-- **Risk**: after `/do-ask-questions`, use `classify-change` when the host repo enables it.
-- **Parallel work**: `worktree-isolation` before branching risky or concurrent tasks.
+4. Loop: Tester runs → if fail, Implementer fixes → Tester re-runs. Stop at GREEN or after three failed loops (then stop and report).
+5. Docs required by host hooks / `AGENTS.md`.
+6. Project checks (pytest, lint, CI entrypoint).
+7. Report:
+
+   | tests (tester) | code (implementer) | checks | open risks |
+   |----------------|--------------------|--------|------------|
+
+## Deep references
+
+- `tdd` (`tests.md`, `mocking.md`): RED before GREEN, no tautological tests.
+- `classify-change` when the host enables it.
+- `worktree-isolation` for parallel or risky work.
 
 ## Rules
 
-- Do not skip tests for non-trivial behavior.
-- Do not claim done without running relevant checks.
-- If docs hook blocks commit, fix docs and stage before retrying `git commit`.
+- Tester and implementer reports stay separate even if one agent plays both roles.
+- Do not claim done without a tester run that is GREEN.
+- Docs hook on commit: stage docs, do not skip the hook.
