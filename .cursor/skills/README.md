@@ -21,4 +21,4 @@
 
 ## Planned domain packs
 
-`do-ux_ui`, `do-analytics`, `do-system_design`, `do-development` (+ backend/frontend/devops references) — stubs until content is added.
+`consider-ux_ui`, `consider-analytics`, `consider-system_design`, `consider-development` (`/consider-*`, backend/frontend/devops references) — stubs until content is added.
