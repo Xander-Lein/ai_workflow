@@ -46,4 +46,12 @@ for name in "${retired[@]}"; do
   rm -f "${USER_CURSOR}/commands/${name}"
 done
 
+retired_skills=(
+  do-tdd-loop do-documentation do-plan-and-specs do-roadmap do-branch-to-master
+  do-security-review implement-spec interrogate orchestrate spec-plan tdd-loop
+)
+for name in "${retired_skills[@]}"; do
+  rm -rf "${USER_CURSOR}/skills/${name}"
+done
+
 echo "Synced .cursor to $USER_CURSOR"

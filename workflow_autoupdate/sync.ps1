@@ -69,4 +69,14 @@ foreach ($name in $retiredCommands) {
     if (Test-Path $path) { Remove-Item $path -Force }
 }
 
+$retiredSkills = @(
+    "do-tdd-loop", "do-documentation", "do-plan-and-specs", "do-roadmap", "do-branch-to-master",
+    "do-security-review", "implement-spec", "interrogate", "orchestrate", "spec-plan", "tdd-loop"
+)
+$skillsDir = Join-Path $UserCursor "skills"
+foreach ($name in $retiredSkills) {
+    $path = Join-Path $skillsDir $name
+    if (Test-Path $path) { Remove-Item $path -Recurse -Force }
+}
+
 Write-Host "Synced .cursor to $UserCursor from $AI_WORKFLOW_CLONE_DIR"
