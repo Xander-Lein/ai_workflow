@@ -58,4 +58,15 @@ if (-not (Test-Path $DestHooks) -and (Test-Path $ExampleHooks)) {
     Copy-Item $ExampleHooks $DestHooks
 }
 
+# Command stubs duplicated skills in the slash menu. Drop leftovers from older syncs.
+$retiredCommands = @(
+    "do-analytics.md", "do-ask-questions.md", "do-branch-to-dev.md", "do-dev-to-prod.md",
+    "do-development.md", "do-new-feature.md", "do-review.md", "do-system_design.md", "do-ux_ui.md"
+)
+$commandsDir = Join-Path $UserCursor "commands"
+foreach ($name in $retiredCommands) {
+    $path = Join-Path $commandsDir $name
+    if (Test-Path $path) { Remove-Item $path -Force }
+}
+
 Write-Host "Synced .cursor to $UserCursor from $AI_WORKFLOW_CLONE_DIR"

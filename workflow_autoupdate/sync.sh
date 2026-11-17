@@ -37,4 +37,13 @@ if [[ ! -f "$DEST_HOOKS" && -f "$EXAMPLE" ]]; then
   cp "$EXAMPLE" "$DEST_HOOKS"
 fi
 
+# Drop command stubs that duplicated skills in the slash menu.
+retired=(
+  do-analytics.md do-ask-questions.md do-branch-to-dev.md do-dev-to-prod.md
+  do-development.md do-new-feature.md do-review.md do-system_design.md do-ux_ui.md
+)
+for name in "${retired[@]}"; do
+  rm -f "${USER_CURSOR}/commands/${name}"
+done
+
 echo "Synced .cursor to $USER_CURSOR"
