@@ -4,7 +4,7 @@ Runs on **every** `/do-review`. Scope: **added/modified** code in the pinned dif
 
 ## Host override
 
-If the workspace has `.cursor/skills/do-security-review/SKILL.md` (myfin and similar), **read and follow that skill** as the security subprocess. Merge its findings into `## Security`. Do not print secrets.
+If the workspace has `.cursor/skills/do-security-review/SKILL.md`, **read and follow that skill** as the security subprocess. Merge its findings into `## Security`. Do not print secrets.
 
 If that file is absent, use this checklist.
 

@@ -2,14 +2,14 @@
 name: do-dev-to-prod
 description: >-
   Promote integration branch to production: sync dev, show dev-not-on-prod table,
-  push, MR/PR to master/main, merge, optional prod pull. Never delete dev or master/main.
-  Override in host repo for paths, KB, and GitLab scripts.
+  push, MR/PR to master/main, merge, then run the repo post-merge deploy script
+  when present. Never delete dev or master/main. Do not pull a sibling clone.
 disable-model-invocation: true
 ---
 
 # /do-dev-to-prod
 
-Template — **override** in the host repository for real prod roots and `gitlab-mr.ps1`.
+Host-specific paths, credentials, and deploy commands stay in the project repository.
 
 ## Branch guards
 
@@ -27,7 +27,7 @@ Template — **override** in the host repository for real prod roots and `gitlab
 - [ ] 5. Push dev or feat branch if protected
 - [ ] 6. MR/PR → master/main + approve + merge
 - [ ] 7. Remote CI only if runner available
-- [ ] 8. Optional prod clone pull (host paths only)
+- [ ] 8. Post-merge deploy script, or a same-named project skill; otherwise skip deploy
 - [ ] 9. Tables: landed on prod; remaining dev-not-prod
 ```
 
@@ -39,8 +39,16 @@ Before push/MR, show:
 
 from `git log origin/<prod>..origin/dev --oneline`. User may abort.
 
+## 8. After merge
+
+Run a deploy only from the repository that was just merged.
+
+1. On Windows, if `scripts/post_merge_deploy.ps1` exists at the repo root, run it. On Linux or macOS, if `scripts/post_merge_deploy.sh` exists, run it. A non-zero exit stops the skill.
+2. Otherwise, if this repository has its own skill with the same command name and that skill describes a deploy, follow that skill.
+3. Otherwise do not deploy. Do not `git pull` a sibling clone by default.
+
+Product names, hosts, and project-specific launchers stay in the project repository, not in this skill.
+
 ## 9. After merge
 
-**Landed on prod** — same table shape as host `dev-to-prod` skill («Залито на прод»).
-
-Reference implementation: myfin `.cursor/skills/dev-to-prod/SKILL.md` (KB sync, `config.toml`, `gitlab-mr.ps1`, prod pull).
+**Landed on prod** — table of commits, summary, and follow-up. Write it only after merge and after step 8 succeeded or was skipped because no deploy was defined.

@@ -111,4 +111,4 @@ Delete **only** the merged feature branch (local + remote). **Do not** delete `d
 
 ---
 
-Project-specific GitLab scripts, protected paths, and prod clone paths live in **host overrides** (e.g. myfin `dev-to-prod`), not in this upstream skill.
+Project-specific GitLab scripts, protected paths, and prod clone paths live in **host overrides**, not in this upstream skill.
