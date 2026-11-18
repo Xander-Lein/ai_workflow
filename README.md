@@ -44,7 +44,7 @@ Linux:   ~/.cursor/
 
 Contents come from this repo's `.cursor/` (robocopy/rsync). Existing `hooks.json` is kept unless you pass `-OverwriteHooksJson` on Windows.
 
-**Project repos** still use their own `.cursor/hooks.json` and overrides (e.g. `dev-to-prod/gitlab-mr.ps1` in myfin). User-level skills apply globally; project skills merge per Cursor discovery rules.
+**Project repos** still use their own `.cursor/hooks.json` and project-only skills. User-level skills apply globally; project skills merge per Cursor discovery rules.
 
 ## Slash skills
 
