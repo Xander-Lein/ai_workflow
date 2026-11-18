@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import importlib.util
 import json
 import os
 import re
@@ -23,8 +24,7 @@ GIT_ADD_RE = re.compile(r"\bgit\s+add\s+([^;&|]+)", re.I)
 COMMIT_ALL_RE = re.compile(r"\bcommit\b[^;&|]*(-a|--all)\b|(-a|--all)[^;&|]*\bcommit\b", re.I)
 
 AGENTS_DOC = os.environ.get("DOCS_AGENTS_FILE", "AGENTS.md")
-CI_DOC = os.environ.get("DOCS_CI_FILE", "README.md")
-HOOKS_DOC = os.environ.get("DOCS_HOOKS_FILE", CI_DOC)
+_POLICY_CACHE: dict[str, object] = {}
 
 
 def _allow() -> dict:
@@ -39,12 +39,95 @@ def _deny(user_message: str, agent_message: str) -> dict:
     }
 
 
+def _git_toplevel(start: Path) -> Path | None:
+    if not start.exists():
+        return None
+    proc = subprocess.run(
+        ["git", "-C", str(start), "rev-parse", "--show-toplevel"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if proc.returncode != 0:
+        return None
+    line = proc.stdout.strip()
+    return Path(line) if line else None
+
+
 def _find_repo_root() -> Path:
+    found = _git_toplevel(Path.cwd())
+    if found:
+        return found
     here = Path(__file__).resolve()
     for parent in [here, *here.parents]:
         if (parent / ".git").is_dir():
             return parent
     return Path.cwd()
+
+
+def resolve_repo_root(payload: dict | None = None) -> Path:
+    candidates: list[Path] = []
+    if isinstance(payload, dict):
+        blobs = [payload]
+        tool_input = payload.get("tool_input") or payload.get("input") or {}
+        if isinstance(tool_input, dict):
+            blobs.append(tool_input)
+        for blob in blobs:
+            for key in ("cwd", "working_directory"):
+                val = blob.get(key)
+                if isinstance(val, str) and val.strip():
+                    candidates.append(Path(val.strip()))
+    candidates.append(Path.cwd())
+    for start in candidates:
+        found = _git_toplevel(start)
+        if found:
+            return found
+    return _find_repo_root()
+
+
+def ci_doc_for_repo(repo_root: Path) -> str:
+    override = os.environ.get("DOCS_CI_FILE")
+    if override:
+        return override
+    if (repo_root / "docs" / "testing-and-ci.md").is_file():
+        return "docs/testing-and-ci.md"
+    return "README.md"
+
+
+def _policy_file(repo_root: Path) -> Path | None:
+    raw = os.environ.get("DOCS_POLICY_FILE", "").strip()
+    if raw:
+        path = Path(raw)
+        if not path.is_absolute():
+            path = repo_root / path
+        return path if path.is_file() else None
+    default = repo_root / "scripts" / "docs_precommit_policy.py"
+    return default if default.is_file() else None
+
+
+def load_policy(repo_root: Path):
+    path = _policy_file(repo_root)
+    if path is None:
+        return None
+    key = str(path.resolve())
+    cached = _POLICY_CACHE.get(key)
+    if cached is not None:
+        return cached
+    spec = importlib.util.spec_from_file_location("docs_precommit_policy", path)
+    if spec is None or spec.loader is None:
+        return None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    _POLICY_CACHE[key] = module
+    return module
+
+
+def _call_required_docs(fn, code_paths: set[str], repo_root: Path) -> set[str]:
+    try:
+        result = fn(code_paths, repo_root=repo_root)
+    except TypeError:
+        result = fn(code_paths)
+    return {normalize_path(item) for item in result}
 
 
 def normalize_path(raw: str) -> str:
@@ -157,14 +240,31 @@ def meaningful_code_paths(paths: set[str]) -> set[str]:
     return code
 
 
-def required_docs_for_code(code_paths: set[str]) -> set[str]:
+def required_docs_for_code(
+    code_paths: set[str],
+    *,
+    repo_root: Path | None = None,
+) -> set[str]:
+    root = repo_root or resolve_repo_root()
+    policy = load_policy(root)
+    fn = getattr(policy, "required_docs_for_code", None) if policy else None
+    if callable(fn):
+        return _call_required_docs(fn, code_paths, root)
     required: set[str] = set()
     for path in code_paths:
-        required |= required_docs_for_single_path(normalize_path(path))
+        required |= _default_docs_for_single_path(normalize_path(path), root)
     return required
 
 
-def required_docs_for_single_path(norm: str) -> set[str]:
+def required_docs_for_single_path(norm: str, repo_root: Path | None = None) -> set[str]:
+    """Default rules for one path. Prefer required_docs_for_code so a repo policy stays in sync."""
+    root = repo_root or resolve_repo_root()
+    return _default_docs_for_single_path(norm, root)
+
+
+def _default_docs_for_single_path(norm: str, repo_root: Path) -> set[str]:
+    ci_doc = ci_doc_for_repo(repo_root)
+    hooks_doc = os.environ.get("DOCS_HOOKS_FILE", ci_doc)
     required: set[str] = set()
     if not norm or is_noise_path(norm) or norm.endswith(".md"):
         return required
@@ -174,14 +274,14 @@ def required_docs_for_single_path(norm: str) -> set[str]:
         return required
 
     if norm.startswith("hooks/") or norm.startswith(".cursor/hooks/"):
-        required.add(HOOKS_DOC)
+        required.add(hooks_doc)
         return required
 
     if norm in {"compose.yaml", "Dockerfile", "pyproject.toml", "uv.lock"} or norm.startswith(
         "docker/"
     ):
         required.add(AGENTS_DOC)
-        required.add(CI_DOC)
+        required.add(ci_doc)
         return required
 
     if norm.startswith("shared/core_transforms/"):
@@ -218,16 +318,25 @@ def required_docs_for_single_path(norm: str) -> set[str]:
         required.add(f"knowledge-base/scripts/{script.group(1)}/README.md")
         return required
 
-    if norm.startswith(".gitlab-ci.yml") or norm == "scripts/ci_checks.py":
-        required.add(CI_DOC)
+    if (
+        norm.startswith(".gitlab-ci.yml")
+        or norm == "scripts/ci_checks.py"
+        or norm.startswith(".githooks/")
+    ):
+        required.add(ci_doc)
     return required
 
 
-def doc_triggers(code_paths: set[str], missing_docs: set[str]) -> dict[str, list[str]]:
+def doc_triggers(
+    code_paths: set[str],
+    missing_docs: set[str],
+    repo_root: Path | None = None,
+) -> dict[str, list[str]]:
+    root = repo_root or resolve_repo_root()
     out: dict[str, list[str]] = {doc: [] for doc in missing_docs}
     for path in sorted(code_paths):
         norm = normalize_path(path)
-        for doc in required_docs_for_single_path(norm):
+        for doc in required_docs_for_code({norm}, repo_root=root):
             if doc in out:
                 out[doc].append(norm)
     return {k: v for k, v in out.items() if v}
@@ -249,7 +358,7 @@ def evaluate_commit(command: str, repo_root: Path) -> dict | None:
     if not code_paths or is_test_only_commit(code_paths):
         return None
 
-    required = required_docs_for_code(code_paths)
+    required = required_docs_for_code(code_paths, repo_root=repo_root)
     if not required:
         return None
 
@@ -261,7 +370,7 @@ def evaluate_commit(command: str, repo_root: Path) -> dict | None:
     unstaged = git_unstaged_paths(repo_root, missing)
     to_write = missing - unstaged
     to_stage = missing & unstaged
-    triggers = doc_triggers(code_paths, missing)
+    triggers = doc_triggers(code_paths, missing, repo_root=repo_root)
 
     lines: list[str] = [
         "update_docs_precommit: stage documentation updates for this commit.",
@@ -325,7 +434,7 @@ def main() -> int:
         print(json.dumps(_allow()))
         return 0
 
-    repo_root = _find_repo_root()
+    repo_root = resolve_repo_root(payload)
     result = evaluate_commit(command, repo_root)
     print(json.dumps(result if result else _allow(), ensure_ascii=False))
     return 0
