@@ -3,25 +3,25 @@
   "hooks": {
     "beforeReadFile": [
       {
-        "command": "python .cursor/hooks/deny_secrets_read.py",
+        "command": "python %USERPROFILE%\\.cursor\\hooks\\deny_secrets_read.py",
         "matcher": "Read",
         "failClosed": false
       }
     ],
     "preToolUse": [
       {
-        "command": "python .cursor/hooks/deny_prod_write.py",
+        "command": "python %USERPROFILE%\\.cursor\\hooks\\deny_prod_write.py",
         "matcher": "Write|StrReplace|Delete|EditNotebook",
         "failClosed": false
       }
     ],
     "beforeShellExecution": [
       {
-        "command": "python .cursor/hooks/deny_prod_write.py",
+        "command": "python %USERPROFILE%\\.cursor\\hooks\\deny_prod_write.py",
         "failClosed": false
       },
       {
-        "command": "python .cursor/hooks/update_docs_precommit.py",
+        "command": "python %USERPROFILE%\\.cursor\\hooks\\update_docs_precommit.py",
         "matcher": "git commit",
         "failClosed": false
       }

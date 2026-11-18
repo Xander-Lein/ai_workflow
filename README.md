@@ -71,7 +71,13 @@ Shared helpers (no slash): `classify-change`, `code-review`, `tdd`, `worktree-is
 
 ## Hooks
 
-Under `.cursor/hooks/` — see [`.cursor/hooks/README.md`](.cursor/hooks/README.md). Example wiring: [`.cursor/hooks/hooks.json.example`](.cursor/hooks/hooks.json.example).
+Under `.cursor/hooks/` — see [`.cursor/hooks/README.md`](.cursor/hooks/README.md). Example user wiring: [`.cursor/hooks/hooks.json.example`](.cursor/hooks/hooks.json.example). The docs hook command is the profile script:
+
+```text
+python %USERPROFILE%\.cursor\hooks\update_docs_precommit.py
+```
+
+A project `hooks.json` must not add another docs hook. Put repo rules in `scripts/docs_precommit_policy.py` (copy [`scripts/docs_precommit_policy.example.py`](scripts/docs_precommit_policy.example.py)). If the repo has `docs/testing-and-ci.md`, that file is the default CI doc.
 
 Tests: `py -m pytest .cursor/hooks/tests -q`
 
